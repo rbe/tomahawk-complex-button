@@ -1,0 +1,9 @@
+<glassfish-web-app error-url="">
+    <!--
+    <context-root>/Grandis</context-root>
+    -->
+    <!--
+    <class-loader delegate="false"/>
+    <property name="useBundledJsf" value="true"/>
+    -->
+</glassfish-web-app>

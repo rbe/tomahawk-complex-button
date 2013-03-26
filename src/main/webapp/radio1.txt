@@ -1,0 +1,51 @@
+Falscher Artikel geliefert
+    Falsche Größe
+    Falsche Farbe
+    komplett falscher Artikel
+
+Ware wurde nicht bestellt / falsch bestellt
+    Falsche Liefermenge
+    Doppelte Lieferung
+
+Transportschaden
+    Zu lange Lieferzeit / Ware zu spät geliefert
+
+Lieferung unvollständig
+
+Ware defekt
+    Textfeld: ausführliche Fehlerbeschreibung
+
+Ware gefällt nicht / Ware entspricht nicht den Erwartungen
+    Dann sollten je Artikel, Artikel-Gruppe, Artikel-Hauptgruppe, Firma (Einteilung AS400) andere zusätzliche Gründe erscheinen oder
+    wenn keine speziellen Gründe hinterlegt sind kommt auch hier ein freies Textfeld
+
+Bei jeder Auswahlmöglichkeit kommt nach Klick ein Textfeld: „zusätzliche Anmerkungen:“
+
+
+
+<h:panelGroup id="panel">
+
+    <h:selectOneRadio id="stage1" value="#{my.stage1Selected}">
+        <f:selectItem itemValue="a" itemLabel="Falscher Artikel geliefert"/>
+        <f:ajax event="change" render="panel" listener="#{my.stage1ChangeListener}"/>
+    </h:selectOneRadio>
+    <h:selectOneRadio id="stage2" value="#{my.stage2Selected}" rendered="#{my.stage1Selected.equalsIgnoreCase('a')}">
+        <f:selectItems value="#{my.stage2Values}"/>
+        <f:ajax event="change" render="panel" listener="#{my.stage2ChangeListener}"/>
+    </h:selectOneRadio>
+    <h:outputText id="stage2ThankYou" value="Danke!" rendered="#{not empty my.stage2Selected}"/>
+
+</h:panelGroup>
+
+
+
+<h:panelGrid columns="1">
+    <f:param name="articleIdent" value="#{article.articleIdent}"/>
+    <ui:repeat value="#{retoure.getReturnReasonForArticle(article)}" var="reason">
+        <h:selectOneRadio>
+            <f:selectItem itemLabel="#{reason.reason}" itemValue="#{reason.id}"/>
+            <f:param name="articleIdent" value="#{article.articleIdent}"/>
+            <f:ajax event="click" listener="#{retoure.reasonSelected}"/>
+        </h:selectOneRadio>
+    </ui:repeat>
+</h:panelGrid>

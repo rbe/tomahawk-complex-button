@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Simple JSF Facelets page</title>
+</h:head>
+<h:body>
+    Hi.
+    <h:form>
+        <h:panelGroup id="panel1" columns="2">
+
+            <h:selectOneRadio id="stage1" value="#{my.stage1Selected}">
+                <f:selectItems value="#{my.stage1Values2}"
+                               var="i"
+                               itemDisabled="#{i.disabled}"
+                               itemValue="#{i.value}" itemLabel="#{i.label}" itemDescription="Hallo #{i.description}"/>
+                <f:ajax event="change" render="panel1" listener="#{my.stage1ChangeListener}"/>
+            </h:selectOneRadio>
+            <h:selectOneRadio id="stage2" value="#{my.stage2Selected}" rendered="#{my.stage2Render}">
+                <f:selectItems value="#{my.stage2Values}"/>
+                <f:ajax event="change" render="panel1" listener="#{my.stage2AjaxListener}"/>
+            </h:selectOneRadio>
+
+            <h:panelGroup rendered="#{my.completed}">
+                <h:inputTextarea id="textarea"
+                                 rendered="#{my.showTextarea}" required="#{my.textareaMandatory}"
+                                 rows="5" cols="40"/>
+                <h:outputText id="stage2ThankYou" value="Danke!" rendered="#{not empty my.stage2Selected}"/>
+            </h:panelGroup>
+
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>

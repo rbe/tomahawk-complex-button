@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+    <title>Simple JSF Facelets page</title>
+</h:head>
+<h:body>
+    <h:form id="form">
+        <h:panelGroup id="panel1">
+            <h:panelGrid id="grid1" columns="1">
+                <!--
+                    stage1
+                -->
+                <t:selectOneRadio id="stage1Radio" value="#{my.stage1Selected}" layout="spread">
+                    <f:selectItems value="#{my.stage1Values}" var="i"
+                                   itemDisabled="#{i.disabled}" itemValue="#{i.value}" itemLabel="#{i.label}"/>
+                    <f:ajax event="change" render="@form" listener="#{my.stage1ChangeListener}"/>
+                </t:selectOneRadio>
+                <!--
+                    stage2
+                -->
+                <c:forEach items="${my.stage1Values}" var="i" varStatus="s">
+                    <t:radio for="stage1Radio" index="#{s.index}"/>
+                    <!--onchange="mojarra.ab(this.getAttribute('id'),event,'valueChange',0,'@form')"-->
+                    <t:selectManyCheckbox id="stage2Checkbox${s.index}" layout="spread"
+                                          valueChangeListener="#{my.stage2ValueChangeListener}">
+                        <f:selectItems value="#{my.stage2Values[s.index]}" var="j"
+                                       itemDisabled="#{j.disabled}" itemValue="#{j.value}" itemLabel="#{j.label}"/>
+                    </t:selectManyCheckbox>
+                    <h:panelGrid style="margin-left: 25px;">
+                        <c:forEach items="${my.stage2Values[s.index]}" var="j" varStatus="t">
+                            <t:checkbox rendered="#{my.stage2Render[s.index]}"
+                                        id="stage2Checkbox${s.index}${t.index}"
+                                        for="stage2Checkbox#{s.index}" index="#{t.index}"/>
+                        </c:forEach>
+                        <h:inputTextarea id="textarea#{s.index}"
+                                         rendered="#{my.stage2Render[s.index]}"
+                                         required="#{my.textareaMandatory}"
+                                         value="#{my.message}" valueChangeListener="#{my.textareaValueChangeListener}"
+                                         rows="5" cols="40">
+                            <f:ajax listener="#{my.textareaAjaxListener}"/>
+                        </h:inputTextarea>
+                    </h:panelGrid>
+                </c:forEach>
+            </h:panelGrid>
+            <h:commandButton action="#{my.commandButton}" value="Abschicken"/>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>

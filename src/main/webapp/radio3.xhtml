@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+    <title>Simple JSF Facelets page</title>
+</h:head>
+<h:body>
+    Hi.
+    <h:form>
+        <h:panelGroup id="panel1" columns="2">
+
+            <h:panelGrid id="grid1" columns="1">
+                <ui:repeat id="uirepeat1" value="#{my.stage1Values}" var="i">
+                    <h:selectOneRadio id="select1" value="#{my.stage1Selected}">
+                        <f:selectItem id="selectitem1"
+                                      itemDisabled="#{i.disabled}"
+                                      itemValue="#{i.value}" itemLabel="#{i.label}"/>
+                        <f:ajax event="change" render="@form" listener="#{my.stage1ChangeListener}"/>
+                    </h:selectOneRadio>
+                </ui:repeat>
+            </h:panelGrid>
+
+            <h:panelGrid id="grid2" rendered="#{my.stage2Render}">
+                <ui:repeat id="uirepeat2" value="#{my.stage2Values}" var="i">
+                    <h:selectOneRadio id="select2" value="#{my.stage2Selected}">
+                        <f:selectItem id="selectitem2"
+                                      itemDisabled="#{i.disabled}"
+                                      itemValue="#{i.value}" itemLabel="#{i.label}"/>
+                        <f:ajax event="change" render="@form" listener="#{my.stage2AjaxListener}"/>
+                    </h:selectOneRadio>
+                </ui:repeat>
+            </h:panelGrid>
+
+            <h:panelGroup rendered="#{my.completed}">
+                <h:inputTextarea id="textarea"
+                                 rendered="#{my.showTextarea}" required="#{my.textareaMandatory}"
+                                 rows="5" cols="40"/>
+                <h:outputText id="stage2ThankYou" value="Danke!" rendered="#{not empty my.stage2Selected}"/>
+            </h:panelGroup>
+
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>
